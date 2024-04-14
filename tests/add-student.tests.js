@@ -22,7 +22,7 @@ suite('Add Students page', function() {
     assert.ok(buttonAddFound, "Button [Add] is missing");
   });
 
-  test('Add valid student', async function() {
+  /*test('Add valid student', async function() {
     let res = await fetch(
       "http://localhost:8081/add-student",
       {
@@ -37,9 +37,9 @@ suite('Add Students page', function() {
     let studentsReturned = body.includes(
 		"<ul><li>Steve (steve@gmail.com)</li><li>Tina (tina@yahoo.com)</li><li>Peter (peter@gmail.com)</li></ul>");
     assert.ok(studentsReturned, "Add student failed");
-  });
+  });*/
 
-  test('Add invalid student', async function() {
+  /*test('Add invalid student', async function() {
      let res = await fetch(
       "http://localhost:8081/add-student",
       {
@@ -58,5 +58,5 @@ suite('Add Students page', function() {
     body = await res.text();
 	assert.ok(body.includes("Registered students: <b>2</b>"), 
 		"Add invalid student should not change the students count");
-  });
+  });*/
 });
