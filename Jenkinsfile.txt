@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION = '21.7.3'
-        SERVICE = 'render-service-id'
+        NODE_VERSION = '21.7.1'
+        SERVICE_ID = 'render-service-id'
         RENDER_API_KEY = 'render-api-key'
     }
 
@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-        stage('Inastall dependencies') {
+        stage('Install dependencies') {
             steps {
                 bat 'npm install'
                 bat 'npm install -g wait-on kill-port'
@@ -28,12 +28,19 @@ pipeline {
         stage('Run tests') {
             steps {
                 bat 'start /b npm run start'
-                bat 'wait-on https://localhost:8083'
-                bat 'npm-test'
-                bat 'kill-port 8083'
+                bat 'wait-on http://localhost:8081'
+                bat 'npm test'
+                bat 'kill-port 8081'
             }
         }
     }
 
-    
-} 
+    post {
+        always {
+            echo 'CI Pipeline completed.'
+        }
+        failure {
+            bat 'kill-port 8081'
+        }
+    }
+}
