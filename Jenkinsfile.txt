@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    environment {
+        NODE_VERSION = '21.7.3'
+        SERVICE = 'render-service-id'
+        RENDER_API_KEY = 'render-api-key'
+    }
+
+    tools {
+        nodejs "${NODE_VERSION}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Inastall dependencies') {
+            steps {
+                bat 'npm install'
+                bat 'npm install -g wait-on kill-port'
+            }
+        }
+
+        stage('Run tests') {
+            steps {
+                bat 'start /b npm run start'
+                bat 'wait-on https://localhost:8083'
+                bat 'npm-test'
+                bat 'kill-port 8083'
+            }
+        }
+    }
+
+    
+} 
